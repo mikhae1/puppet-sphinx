@@ -7,7 +7,8 @@ class sphinx::install inherits sphinx {
   }
 
   package { 'sphinx':
-    ensure => 'present',
+    ensure => $package_ensure,
     require => yumrepo['sphinx'],
+    before => Class['sphinx::config'],
   }
 }
