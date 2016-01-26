@@ -1,7 +1,7 @@
 {
   "name": "mmekhanov-sphinx",
   "version": "0.1.0",
-  "author": "mmekhanov",
+  "author": "Mikhail Mekhanov",
   "summary": "Install Sphinx server",
   "license": "Apache 2.0",
   "source": "git@github.com:minkolazer/puppet-sphinx.git",
