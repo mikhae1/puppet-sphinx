@@ -18,6 +18,7 @@ class sphinx::config inherits sphinx {
     group   => 0,
     mode    => 0644,
     content => template("$module_name/sphinx.conf"),
+    replace => 'no',
   }
 
    file { '/etc/sphinx/indexer.conf':
@@ -26,6 +27,7 @@ class sphinx::config inherits sphinx {
     group   => 0,
     mode    => 0644,
     content => template("$module_name/indexer.conf"),
+    replace => 'no',
   }
 
   file { '/etc/sphinx/searchd.conf':
@@ -34,6 +36,7 @@ class sphinx::config inherits sphinx {
     group   => 0,
     mode    => 0644,
     content => template("$module_name/searchd.conf"),
+    replace => 'no',
   }
 
   file { $config_index_path:
@@ -43,5 +46,10 @@ class sphinx::config inherits sphinx {
     mode    => '0775',
   }
 
- 
+  file { '/usr/local/bin/sphinx_reindex':
+    ensure  => file,
+    content => template("$module_name/sphinx_reindex.erb"),
+    replace => 'no',   
+  }
+
 }
