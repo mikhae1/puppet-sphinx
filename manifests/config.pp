@@ -6,19 +6,23 @@ class sphinx::config inherits sphinx {
     mode    => '0775',
   }
 
-  exec {'Sphinx group membership for the admins':
-    unless => "/bin/getent group sphinx|/bin/cut -d: -f4|/bin/grep -q ${config_admin}",
-    command => "/usr/sbin/usermod -a -G sphinx ${config_admin}",
-    #require => Package["sphinx"],
+  define modUserGroups ($user = $title) {
+    exec { "Sphinx group membership for: $user":
+      unless => "/bin/getent group sphinx|/bin/cut -d: -f4|/bin/grep -q ${user}", # test user exists
+      command => "/usr/sbin/usermod -a -G sphinx ${user}",
+      #require => Package["sphinx"],
+    }
   }
-
+ 
+  modUserGroups { $config_admins: }
+  
   file { '/etc/sphinx/sphinx.conf':
     ensure  => file,
     owner   => 0,
     group   => 0,
     mode    => 0644,
     content => template("$module_name/sphinx.conf"),
-    replace => 'no',
+    #replace => 'no',
   }
 
    file { '/etc/sphinx/indexer.conf':
@@ -48,6 +52,7 @@ class sphinx::config inherits sphinx {
 
   file { '/usr/local/bin/sphinx_reindex':
     ensure  => file,
+    mode    => '0755',
     content => template("$module_name/sphinx_reindex.erb"),
     replace => 'no',   
   }
